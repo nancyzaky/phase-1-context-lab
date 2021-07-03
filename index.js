@@ -8,7 +8,7 @@
  As a result, the lessons for this function will pass *and* it will be available
  for you to use if you need it!
  */
-const createEmployeeRecord = ([firstName, familyName, title, payPerHour ]) => {
+const createEmployeeRecord = ([firstName, familyName, title, payPerHour, timeInEvents ]) => {
 let obj = {};
 obj.firstName = firstName;
 obj.familyName = familyName;
@@ -27,13 +27,22 @@ const createEmployeeRecords = (arrayOfArrays) => {
     return result;
 }
 const createTimeInEvent = (date) => {
-    let dateArr = date.split(' ')
-    let obj = {};
-    obj.type = "TimeIn";
-    obj.hour = dateArr[1];
-    obj.date = dateArr[0];
-    this.timeInEvents.push(obj)
-    return this;
+    // let dateArr = date.split(' ')
+    // let obj = {};
+    // obj.type = "TimeIn";
+    // obj.hour = parseInt(dateArr[1]);
+    // obj.date = dateArr[0];
+
+    // this.timeInEvents.push(obj)
+    // return this;
+
+    let [d, hour] = date.split(' ')
+    this.timeInEvents.push({
+        type: "TimeIn",
+        hour: parseInt(hour, 10),
+        date: d
+    })
+    return this
 }
 
 const allWagesFor = function () {
