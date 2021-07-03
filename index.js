@@ -8,7 +8,7 @@
  As a result, the lessons for this function will pass *and* it will be available
  for you to use if you need it!
  */
-const createEmployeeRecord = ([firstName, familyName, title, payPerHour, timeInEvents ]) => {
+function createEmployeeRecord ([firstName, familyName, title, payPerHour]) {
 let obj = {};
 obj.firstName = firstName;
 obj.familyName = familyName;
@@ -26,26 +26,70 @@ const createEmployeeRecords = (arrayOfArrays) => {
     });
     return result;
 }
-const createTimeInEvent = (date) => {
-    // let dateArr = date.split(' ')
-    // let obj = {};
-    // obj.type = "TimeIn";
-    // obj.hour = parseInt(dateArr[1]);
-    // obj.date = dateArr[0];
+function createTimeInEvent(date) {
+    let dateArr = date.split(' ')
+    let obj = {};
+    obj.type = "TimeIn";
+    obj.hour = parseInt(dateArr[1]);
+    obj.date = dateArr[0];
 
-    // this.timeInEvents.push(obj)
-    // return this;
+    this.timeInEvents.push(obj)
+    return this;
 
-    let [d, hour] = date.split(' ')
-    this.timeInEvents.push({
-        type: "TimeIn",
-        hour: parseInt(hour, 10),
-        date: d
+
+}
+function createTimeOutEvent (date) {
+    let dateArr = date.split(' ')
+    let obj = {};
+    obj.type = "TimeOut";
+    obj.hour = parseInt(dateArr[1]);
+    obj.date = dateArr[0];
+
+    this.timeOutEvents.push(obj)
+    return this;
+}
+
+function hoursWorkedOnDate(date) {
+    let resultIn = this.timeInEvents.filter(obj => {
+        return obj.date === date;
     })
-    return this
+    let resultOut = this.timeOutEvents.filter(obj => {
+        return obj.date === date;
+    })
+    console.log(resultIn)
+    console.log(resultOut)
+    let finalResult;
+    let hourKey = resultIn[0].hour;
+    let hourOutKey = resultOut[0].hour;
+    console.log(parseInt(hourOutKey- hourKey, 10))
+    let result = (hourOutKey - hourKey).toString().split('');
+    if (parseInt(result[2]) > 0) {
+       finalResult = parseInt(result[0] + result[1])
+    } else {
+       finalResult = parseInt(result[0])
+    }
+    console.log(finalResult);
+    return finalResult
+
+}
+
+function wagesEarnedOnDate (date) {
+   let result =  hoursWorkedOnDate.call(this, date)
+   return result * (this.payPerHour);
+}
+function findEmployeeByFirstName (arr, name) {
+let result = arr.filter(obj => {
+    return obj.firstName === name
+})
+if (result) {
+    return result[0]
+}else {
+    return undefined;
+}
 }
 
 const allWagesFor = function () {
+    console.log(this)
     const eligibleDates = this.timeInEvents.map(function (e) {
         return e.date
     })
@@ -55,5 +99,13 @@ const allWagesFor = function () {
     }.bind(this), 0) // <== Hm, why did we need to add bind() there? We'll discuss soon!
 
     return payable
+}
+
+function calculatePayroll(arrayOfObs) {
+    let result = arrayOfObs.reduce((accumulator, obj) => {
+        return allWagesFor.bind(obj)()+ accumulator
+    }, 0)
+
+    return result;
 }
 
