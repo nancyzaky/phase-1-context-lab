@@ -8,6 +8,33 @@
  As a result, the lessons for this function will pass *and* it will be available
  for you to use if you need it!
  */
+const createEmployeeRecord = ([firstName, familyName, title, payPerHour ]) => {
+let obj = {};
+obj.firstName = firstName;
+obj.familyName = familyName;
+obj.title = title;
+obj.payPerHour = payPerHour;
+obj.timeInEvents = [];
+obj.timeOutEvents = [];
+return obj
+}
+
+
+const createEmployeeRecords = (arrayOfArrays) => {
+    const result = arrayOfArrays.map(arr => {
+        return createEmployeeRecord(arr)
+    });
+    return result;
+}
+const createTimeInEvent = (date) => {
+    let dateArr = date.split(' ')
+    let obj = {};
+    obj.type = "TimeIn";
+    obj.hour = dateArr[1];
+    obj.date = dateArr[0];
+    this.timeInEvents.push(obj)
+    return this;
+}
 
 const allWagesFor = function () {
     const eligibleDates = this.timeInEvents.map(function (e) {
