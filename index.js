@@ -56,25 +56,27 @@ function hoursWorkedOnDate(date) {
     let resultOut = this.timeOutEvents.filter(obj => {
         return obj.date === date;
     })
-    console.log(resultIn)
-    console.log(resultOut)
+    //console.log('result', resultIn)
+    //console.log(resultOut)
     let finalResult;
     let hourKey = resultIn[0].hour;
     let hourOutKey = resultOut[0].hour;
-    console.log(parseInt(hourOutKey- hourKey, 10))
-    let result = (hourOutKey - hourKey).toString().split('');
-    if (parseInt(result[2]) > 0) {
-       finalResult = parseInt(result[0] + result[1])
-    } else {
-       finalResult = parseInt(result[0])
-    }
-    console.log(finalResult);
-    return finalResult
+    // console.log(parseInt(hourOutKey- hourKey, 10))
+    // let result = (hourOutKey - hourKey).toString().split('');
+    // if (parseInt(result[2]) > 0) {
+    //    finalResult = parseInt(result[0] + result[1])
+    // } else {
+    //    finalResult = parseInt(result[0])
+    // }
+    // console.log(finalResult);
+
+    return (hourOutKey- hourKey)/100;
 
 }
 
 function wagesEarnedOnDate (date) {
    let result =  hoursWorkedOnDate.call(this, date)
+   console.log('wage', result * (this.payPerHour));
    return result * (this.payPerHour);
 }
 function findEmployeeByFirstName (arr, name) {
@@ -89,7 +91,7 @@ if (result) {
 }
 
 const allWagesFor = function () {
-    console.log(this)
+    // console.log(this)
     const eligibleDates = this.timeInEvents.map(function (e) {
         return e.date
     })
@@ -102,8 +104,10 @@ const allWagesFor = function () {
 }
 
 function calculatePayroll(arrayOfObs) {
+    console.log('arrayOfObs', arrayOfObs);
     let result = arrayOfObs.reduce((accumulator, obj) => {
-        return allWagesFor.bind(obj)()+ accumulator
+        console.log('accumulator', accumulator);
+        return allWagesFor.call(obj)+ accumulator
     }, 0)
 
     return result;
